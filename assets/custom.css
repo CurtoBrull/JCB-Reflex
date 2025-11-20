@@ -61,7 +61,7 @@
 
 /* Mejoras visuales */
 .rt-Container {
-    max-width: 1200px;
+    max-width: 100%;
 }
 
 /* Grid responsive para portfolio */
@@ -81,5 +81,13 @@
 @media (max-width: 768px) {
     .two-column-grid {
         grid-template-columns: 1fr !important;
+    }
+}
+
+/* Padding responsive para móviles */
+@media (max-width: 768px) {
+    .rt-VStack {
+        padding-left: 1rem !important;
+        padding-right: 1rem !important;
     }
 }
