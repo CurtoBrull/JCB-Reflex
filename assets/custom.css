@@ -1,0 +1,85 @@
+/* Estilos personalizados para el portfolio */
+
+/* Navegación */
+.nav-link {
+    color: white !important;
+    text-decoration: none !important;
+    font-weight: 600;
+    transition: color 0.3s ease;
+    padding: 0.5rem 1rem;
+}
+
+.nav-link:hover {
+    color: #d19617 !important;
+}
+
+.desktop-menu {
+    display: flex;
+}
+
+.mobile-menu-button {
+    display: none;
+}
+
+.mobile-menu {
+    background-color: rgba(30, 35, 38, 0.98);
+    border-radius: 8px;
+    margin-top: 1rem;
+}
+
+.mobile-nav-link {
+    color: white !important;
+    text-decoration: none !important;
+    padding: 0.75rem 1rem;
+    width: 100%;
+    text-align: center;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    border-radius: 4px;
+}
+
+.mobile-nav-link:hover {
+    background-color: rgba(209, 150, 23, 0.2);
+    color: #d19617 !important;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .desktop-menu {
+        display: none !important;
+    }
+
+    .mobile-menu-button {
+        display: block;
+    }
+}
+
+/* Animaciones suaves */
+* {
+    scroll-behavior: smooth;
+}
+
+/* Mejoras visuales */
+.rt-Container {
+    max-width: 1200px;
+}
+
+/* Grid responsive para portfolio */
+@media (max-width: 1024px) {
+    .portfolio-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+}
+
+@media (max-width: 640px) {
+    .portfolio-grid {
+        grid-template-columns: 1fr !important;
+    }
+}
+
+/* Grid responsive para skills y sobre mí */
+@media (max-width: 768px) {
+    .two-column-grid {
+        grid-template-columns: 1fr !important;
+    }
+}
