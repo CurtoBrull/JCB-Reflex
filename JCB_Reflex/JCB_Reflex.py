@@ -2,31 +2,13 @@
 
 import reflex as rx
 from rxconfig import config
-import os
-from dotenv import load_dotenv
 from datetime import datetime
-
-# Cargar variables de entorno desde .env
-load_dotenv()
-
-
-import smtplib
-from email.message import EmailMessage
-
-# Configuración SMTP desde variables de entorno
-SMTP_HOST = os.getenv("SMTP_HOST", "smtp.gmail.com")
-SMTP_PORT = int(os.getenv("SMTP_PORT", "587"))
-SMTP_USER = os.getenv("SMTP_USER", "")
-SMTP_PASS = os.getenv("SMTP_PASS", "")
 
 
 class State(rx.State):
     """The app state."""
 
     show_mobile_menu: bool = False
-    show_success_modal: bool = False
-    sending: bool = False
-    error_message: str = ""
 
     def toggle_menu(self):
         """Toggle mobile menu visibility"""
@@ -35,100 +17,6 @@ class State(rx.State):
     def close_menu(self):
         """Close mobile menu"""
         self.show_mobile_menu = False
-
-    def close_modal(self):
-        """Close success modal"""
-        self.show_success_modal = False
-        self.error_message = ""
-
-    def handle_submit(self, form_data: dict):
-        """Maneja el envío del formulario de contacto usando SMTP clásico"""
-        self.sending = True
-        self.error_message = ""
-
-        try:
-            if not SMTP_USER or not SMTP_PASS:
-                raise Exception("SMTP_USER o SMTP_PASS no configurados en .env")
-
-            # Obtener datos del formulario
-            nombre = form_data.get("name", "").strip()
-            email = form_data.get("email", "").strip()
-            telefono = form_data.get("phone", "").strip()
-            mensaje = form_data.get("message", "").strip()
-
-            # Validaciones básicas
-            if not nombre or not email or not mensaje:
-                raise Exception("Por favor completa todos los campos obligatorios")
-
-            # Preparar el email
-            msg = EmailMessage()
-            msg["From"] = SMTP_USER
-            msg["To"] = "curto.brull.javier@jcurtobr.eu"
-            msg["Subject"] = "Nuevo mensaje desde Portfolio Web"
-            html_content = f"""
-                <!DOCTYPE html>
-                <html>
-                <head>
-                    <style>
-                        body {{ font-family: Arial, sans-serif; line-height: 1.6; color: #333; }}
-                        .container {{ max-width: 600px; margin: 0 auto; padding: 20px; }}
-                        .header {{ background-color: #d19617; color: white; padding: 20px; text-align: center; }}
-                        .content {{ background-color: #f4f4f4; padding: 20px; margin-top: 20px; }}
-                        .field {{ margin-bottom: 15px; }}
-                        .field strong {{ color: #d19617; }}
-                        .message-box {{ background-color: white; padding: 15px; border-left: 4px solid #d19617; margin-top: 10px; }}
-                    </style>
-                </head>
-                <body>
-                    <div class="container">
-                        <div class="header">
-                            <h2>📧 Nuevo Mensaje de Contacto</h2>
-                        </div>
-                        <div class="content">
-                            <div class="field">
-                                <strong>Nombre:</strong> {nombre}
-                            </div>
-                            <div class="field">
-                                <strong>Email:</strong> {email}
-                            </div>
-                            <div class="field">
-                                <strong>Teléfono:</strong> {telefono if telefono else "No proporcionado"}
-                            </div>
-                            <div class="field">
-                                <strong>Mensaje:</strong>
-                                <div class="message-box">
-                                    {mensaje.replace(chr(10), "<br>")}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </body>
-                </html>
-            """
-            msg.set_content("Este mensaje requiere un cliente compatible con HTML.")
-            msg.add_alternative(html_content, subtype="html")
-
-            # Enviar email usando SMTP
-            # Puerto 465 usa SSL directo, 587 usa STARTTLS
-            if SMTP_PORT == 465:
-                with smtplib.SMTP_SSL(SMTP_HOST, SMTP_PORT) as server:
-                    server.login(SMTP_USER, SMTP_PASS)
-                    server.send_message(msg)
-            else:
-                with smtplib.SMTP(SMTP_HOST, SMTP_PORT) as server:
-                    server.starttls()
-                    server.login(SMTP_USER, SMTP_PASS)
-                    server.send_message(msg)
-
-            # Éxito
-            self.show_success_modal = True
-            self.sending = False
-
-        except Exception as e:
-            # Error
-            self.error_message = str(e)
-            self.show_success_modal = True
-            self.sending = False
 
 
 def navbar() -> rx.Component:
@@ -838,7 +726,7 @@ def portfolio() -> rx.Component:
 
 
 def contacto() -> rx.Component:
-    """Sección de contacto con formulario"""
+    """Sección de contacto con formulario usando FormSubmit"""
     return rx.box(
         rx.vstack(
             rx.heading(
@@ -858,99 +746,35 @@ def contacto() -> rx.Component:
                         max_width="1400px",
                     ),
                     rx.grid(
-                        # Formulario
-                        rx.form(
-                            rx.vstack(
-                                # Campos visibles
-                                rx.input(
-                                    placeholder="Nombre *",
-                                    name="name",
-                                    required=True,
-                                    size="3",
-                                    height="3rem",
-                                    width="80%",
-                                ),
-                                rx.input(
-                                    placeholder="Teléfono",
-                                    name="phone",
-                                    size="3",
-                                    height="3rem",
-                                    width="80%",
-                                ),
-                                rx.input(
-                                    placeholder="Email *",
-                                    name="email",
-                                    type="email",
-                                    required=True,
-                                    size="3",
-                                    height="3rem",
-                                    width="80%",
-                                ),
-                                rx.text_area(
-                                    placeholder="Mensaje *",
-                                    name="message",
-                                    required=True,
-                                    rows="8",
-                                    min_height="150px",
-                                    width="80%",
-                                ),
-                                rx.button(
-                                    rx.cond(
-                                        State.sending,
-                                        rx.text("Enviando..."),
-                                        rx.text("Enviar Mensaje"),
-                                    ),
-                                    type="submit",
-                                    size="3",
-                                    color_scheme="orange",
-                                    width="80%",
-                                    disabled=State.sending,
-                                ),
-                                spacing="4",
-                                width="100%",
-                                align="center",
-                            ),
-                            on_submit=State.handle_submit,
-                        ),
-                        # Modal de confirmación
-                        rx.dialog.root(
-                            rx.dialog.content(
-                                rx.dialog.title(
-                                    rx.cond(
-                                        State.error_message != "",
-                                        "Error al Enviar",
-                                        "Mensaje Enviado",
-                                    ),
-                                    color=rx.cond(
-                                        State.error_message != "",
-                                        "#e74c3c",
-                                        "#d19617",
-                                    ),
-                                ),
-                                rx.dialog.description(
-                                    rx.cond(
-                                        State.error_message != "",
-                                        State.error_message,
-                                        "Tu mensaje ha sido enviado correctamente. Te responderé lo antes posible.",
-                                    ),
-                                    size="2",
-                                    margin_bottom="1rem",
-                                ),
-                                rx.flex(
-                                    rx.dialog.close(
-                                        rx.button(
-                                            "Cerrar",
-                                            color_scheme="orange",
-                                            on_click=State.close_modal,
-                                        ),
-                                    ),
-                                    spacing="3",
-                                    margin_top="1rem",
-                                    justify="end",
-                                ),
-                                style={"max_width": 450},
-                            ),
-                            open=State.show_success_modal,
+                        # Formulario con FormSubmit
+                        rx.html(
+                            """
+                            <form action="https://formsubmit.co/curto.brull.javier@jcurtobr.eu" method="POST" style="width: 100%; display: flex; flex-direction: column; align-items: center; gap: 1rem;">
+                                <!-- Campos ocultos de configuración FormSubmit -->
+                                <input type="hidden" name="_subject" value="Nuevo mensaje desde Portfolio Web">
+                                <input type="hidden" name="_captcha" value="false">
+                                <input type="hidden" name="_template" value="table">
+                                <input type="text" name="_honey" style="display:none">
+                                
+                                <!-- Campos visibles -->
+                                <input type="text" name="name" placeholder="Nombre *" required 
+                                    style="width: 80%; height: 3rem; padding: 0.75rem; border-radius: 0.375rem; border: 1px solid #374151; background: #1f2937; color: white; font-size: 1rem;">
+                                
+                                <input type="tel" name="phone" placeholder="Teléfono"
+                                    style="width: 80%; height: 3rem; padding: 0.75rem; border-radius: 0.375rem; border: 1px solid #374151; background: #1f2937; color: white; font-size: 1rem;">
+                                
+                                <input type="email" name="email" placeholder="Email *" required
+                                    style="width: 80%; height: 3rem; padding: 0.75rem; border-radius: 0.375rem; border: 1px solid #374151; background: #1f2937; color: white; font-size: 1rem;">
+                                
+                                <textarea name="message" placeholder="Mensaje *" required rows="8"
+                                    style="width: 80%; min-height: 150px; padding: 0.75rem; border-radius: 0.375rem; border: 1px solid #374151; background: #1f2937; color: white; font-size: 1rem; resize: vertical;"></textarea>
+                                
+                                <button type="submit"
+                                    style="width: 80%; height: 3rem; background: #d19617; color: white; border: none; border-radius: 0.375rem; font-size: 1rem; font-weight: 600; cursor: pointer; transition: background 0.3s;">
+                                    Enviar Mensaje
+                                </button>
+                            </form>
+                            """
                         ),
                         # Información de contacto
                         rx.vstack(
@@ -1055,20 +879,6 @@ def footer() -> rx.Component:
                 f"© Javier Curto Brull - {datetime.now().year}",
                 color="white",
                 size="2",
-            ),
-            rx.text(
-                "Desarrollado con Reflex",
-                color="#d19617",
-                size="1",
-            ),
-            rx.link(
-                rx.image(
-                    src="/img/r_logo.svg",
-                    alt="Reflex Logo",
-                    height="20px",
-                ),
-                href="https://reflex.dev",
-                is_external=True,
             ),
             spacing="4",
             align="center",

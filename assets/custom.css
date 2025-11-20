@@ -1,5 +1,79 @@
 /* Estilos personalizados para el portfolio */
 
+/* Ocultar TODOS los elementos de Reflex en deployment estático */
+/* Modales, alertas y notificaciones */
+div[role="alert"],
+div[role="status"],
+div[class*="error"],
+div[class*="toast"],
+div[class*="notification"],
+div[class*="alert"],
+[data-state="open"],
+[data-radix-popper-content-wrapper],
+[data-radix-toast-viewport] {
+    display: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+}
+
+/* Iconos y botones de conexión */
+div[class*="connection"],
+div[class*="status"],
+svg[class*="wifi"],
+button[class*="connection"],
+button[class*="status"],
+.reflex-status-indicator,
+.connection-status,
+#connection-status {
+    display: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+}
+
+/* Elementos fijos en esquinas */
+div[style*="position: fixed"][style*="bottom"],
+div[style*="position: fixed"][style*="right"],
+div[style*="position: fixed"][style*="z-index"][style*="bottom"],
+div[style*="position: fixed"][style*="z-index"][style*="right"] {
+    display: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+}
+
+/* IDs y clases con status/connection */
+div[id*="status"],
+div[id*="connection"],
+div[id*="notification"],
+button[id*="status"],
+button[id*="connection"] {
+    display: none !important;
+}
+
+/* Enlaces y badges de Reflex */
+a[href*="reflex.dev"],
+a[href*="reflex"],
+footer a[href*="reflex"],
+div[class*="reflex-badge"],
+.reflex-watermark,
+a:has(img[alt*="reflex" i]),
+a:has(img[src*="reflex" i]) {
+    display: none !important;
+}
+
+/* Override cualquier display inline o block en estos elementos */
+*[class*="Toaster"],
+*[class*="toast"],
+*[data-sonner-toaster],
+*[data-sonner-toast] {
+    display: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    height: 0 !important;
+    width: 0 !important;
+    overflow: hidden !important;
+}
+
 /* Navegación */
 .nav-link {
     color: white !important;
