@@ -21,34 +21,34 @@ Este es mi portfolio personal desarrollado con **Reflex**, un framework Python m
 
 1. **Clonar el repositorio** (o navegar al directorio del proyecto):
 
-```bash
-cd ~/workspace/JCB-Reflex
-```
+    ```bash
+    cd ~/workspace/JCB-Reflex
+    ```
 
 2. **Crear y activar el entorno virtual**:
 
-```bash
-python3.12 -m venv venv
-source venv/bin/activate  # En Windows: venv\Scripts\activate
-```
+    ```bash
+    python3.12 -m venv venv
+    source venv/bin/activate  # En Windows: venv\Scripts\activate
+    ```
 
 3. **Instalar dependencias**:
 
-```bash
-pip install -r requirements.txt
-```
+    ```bash
+    pip install -r requirements.txt
+    ```
 
 4. **Configurar variables de entorno**:
 
-Crea un archivo `.env` en la raíz del proyecto con las siguientes variables:
+    Crea un archivo `.env` en la raíz del proyecto con las siguientes variables:
 
-```env
-# Configuración SMTP para envío de correos
-SMTP_HOST=tu-servidor-smtp.com
-SMTP_PORT=465
-SMTP_USER=tu-email@dominio.com
-SMTP_PASS=tu-contraseña
-```
+    ```env
+    # Configuración SMTP para envío de correos
+    SMTP_HOST=tu-servidor-smtp.com
+    SMTP_PORT=465
+    SMTP_USER=tu-email@dominio.com
+    SMTP_PASS=tu-contraseña
+    ```
 
 **Ejemplo para Gmail:**
 
@@ -150,18 +150,18 @@ Dado que Reflex requiere un servidor ASGI/WebSocket que no está disponible en h
 
 1. **Compilar versión estática** (solo frontend):
 
-```bash
-reflex export --frontend-only
-```
+    ```bash
+    reflex export --frontend-only
+    ```
 
-Esto genera los archivos estáticos en `.web/build/client/`
+    Esto genera los archivos estáticos en `.web/build/client/`
 
 2. **Crear paquete de deployment**:
 
-```bash
-cd .web/build/client
-tar -czf ~/portfolio-deploy.tar.gz .
-```
+    ```bash
+    cd .web/build/client
+    tar -czf ~/portfolio-deploy.tar.gz .
+    ```
 
 3. **Subir a Namecheap vía cPanel**:
 
