@@ -1,6 +1,10 @@
 /* Estilos personalizados para el portfolio */
 
-/* Ocultar TODOS los elementos de Reflex en deployment estático */
+/* ============================================
+   OCULTAR ELEMENTOS DE REFLEX EN DEPLOYMENT
+   ============================================ */
+/* Nota: !important es necesario aquí para sobrescribir estilos inline de Reflex */
+
 /* Modales, alertas y notificaciones */
 div[role="alert"],
 div[role="status"],
@@ -61,7 +65,7 @@ a:has(img[src*="reflex" i]) {
     display: none !important;
 }
 
-/* Override cualquier display inline o block en estos elementos */
+/* Override toasters */
 *[class*="Toaster"],
 *[class*="toast"],
 *[data-sonner-toaster],
@@ -74,53 +78,83 @@ a:has(img[src*="reflex" i]) {
     overflow: hidden !important;
 }
 
-/* Navegación */
+/* ============================================
+   NAVEGACIÓN
+   ============================================ */
+
 .nav-link {
-    color: white !important;
-    text-decoration: none !important;
+    color: white;
+    text-decoration: none;
     font-weight: 600;
     transition: color 0.3s ease;
     padding: 0.5rem 1rem;
+    white-space: nowrap;
 }
 
 .nav-link:hover {
-    color: #d19617 !important;
+    color: #d19617;
 }
 
 .desktop-menu {
     display: flex;
+    gap: 0.5rem;
 }
 
 .mobile-menu-button {
     display: none;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+}
+
+.mobile-menu-button:hover {
+    background: rgba(209, 150, 23, 0.2);
 }
 
 .mobile-menu {
     background-color: rgba(30, 35, 38, 0.98);
     border-radius: 8px;
     margin-top: 1rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .mobile-nav-link {
-    color: white !important;
-    text-decoration: none !important;
+    color: white;
+    text-decoration: none;
     padding: 0.75rem 1rem;
     width: 100%;
     text-align: center;
     font-weight: 600;
     transition: all 0.3s ease;
     border-radius: 4px;
+    display: block;
 }
 
 .mobile-nav-link:hover {
     background-color: rgba(209, 150, 23, 0.2);
-    color: #d19617 !important;
+    color: #d19617;
 }
 
-/* Responsive */
+/* ============================================
+   RESPONSIVE NAVIGATION
+   ============================================ */
+
 @media (max-width: 768px) {
     .desktop-menu {
-        display: none !important;
+        display: none;
     }
 
     .mobile-menu-button {
@@ -128,40 +162,322 @@ a:has(img[src*="reflex" i]) {
     }
 }
 
-/* Animaciones suaves */
+/* ============================================
+   ANIMACIONES Y MEJORAS GENERALES
+   ============================================ */
+
 * {
     scroll-behavior: smooth;
+    box-sizing: border-box;
 }
 
-/* Mejoras visuales */
 .rt-Container {
     max-width: 100%;
 }
 
-/* Grid responsive para portfolio */
+/* Evitar overflow horizontal */
+body,
+html {
+    overflow-x: hidden;
+    width: 100%;
+    max-width: 100vw;
+}
+
+/* Reducir tamaño de imagen de inicio en desktop */
+@media (min-width: 1025px) {
+    #inicio img {
+        width: 150px;
+        height: 150px;
+        max-width: 150px;
+        max-height: 150px;
+    }
+}
+
+/* ============================================
+   ESPACIADO ENTRE SECCIONES
+   ============================================ */
+
+/* Espaciado inferior de secciones - móvil por defecto */
+#sobremi,
+#skills,
+#curriculum,
+#portfolio {
+    margin-bottom: 2rem;
+}
+
+/* Espaciado inferior - tablets */
+@media (min-width: 769px) {
+    #sobremi,
+    #skills,
+    #curriculum,
+    #portfolio {
+        margin-bottom: 3rem;
+    }
+}
+
+/* Espaciado inferior - desktop */
+@media (min-width: 1025px) {
+    #sobremi,
+    #skills,
+    #curriculum,
+    #portfolio {
+        margin-bottom: 2rem;
+    }
+}
+
+/* ============================================
+   ESPACIADO DE TÍTULOS DE SECCIÓN
+   ============================================ */
+
+/* Títulos de sección - espaciado superior móvil */
+#sobremi > .rt-VStack > .rt-Heading:first-child,
+#skills > .rt-VStack > .rt-Heading:first-child,
+#portfolio > .rt-VStack > .rt-Heading:first-child {
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+}
+
+/* Títulos - espaciado tablets */
+@media (min-width: 769px) {
+    #sobremi > .rt-VStack > .rt-Heading:first-child,
+    #skills > .rt-VStack > .rt-Heading:first-child,
+    #portfolio > .rt-VStack > .rt-Heading:first-child {
+        margin-top: 3rem;
+    }
+}
+
+/* Títulos - espaciado desktop */
+@media (min-width: 1025px) {
+    #sobremi > .rt-VStack > .rt-Heading:first-child,
+    #skills > .rt-VStack > .rt-Heading:first-child,
+    #portfolio > .rt-VStack > .rt-Heading:first-child {
+        margin-top: 4rem;
+    }
+}
+
+/* Títulos de CURRICULUM y CONTACTO con menos espacio */
+#curriculum > .rt-VStack > .rt-Heading:first-child,
+#contacto > .rt-VStack > .rt-Heading:first-child {
+    margin-top: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+@media (min-width: 769px) {
+    #curriculum > .rt-VStack > .rt-Heading:first-child,
+    #contacto > .rt-VStack > .rt-Heading:first-child {
+        margin-top: 1.5rem;
+        margin-bottom: 2rem;
+    }
+}
+
+@media (min-width: 1025px) {
+    #curriculum > .rt-VStack > .rt-Heading:first-child,
+    #contacto > .rt-VStack > .rt-Heading:first-child {
+        margin-top: 2rem;
+        margin-bottom: 2rem;
+    }
+}
+
+/* ============================================
+   PADDING DE SECCIONES
+   ============================================ */
+
+/* Padding vertical de secciones - móvil */
+#curriculum > .rt-VStack,
+#contacto > .rt-VStack {
+    padding-top: 1rem;
+    padding-bottom: 2rem;
+}
+
+#sobremi > .rt-VStack,
+#skills > .rt-VStack,
+#portfolio > .rt-VStack {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}
+
+/* Padding - tablets */
+@media (min-width: 769px) {
+    #curriculum > .rt-VStack,
+    #contacto > .rt-VStack {
+        padding-top: 2rem;
+        padding-bottom: 3rem;
+    }
+
+    #sobremi > .rt-VStack,
+    #skills > .rt-VStack,
+    #portfolio > .rt-VStack {
+        padding-top: 2rem;
+        padding-bottom: 2rem;
+    }
+}
+
+/* Padding - desktop */
+@media (min-width: 1025px) {
+    #curriculum > .rt-VStack,
+    #contacto > .rt-VStack {
+        padding-top: 2rem;
+        padding-bottom: 3rem;
+    }
+
+    #sobremi > .rt-VStack,
+    #skills > .rt-VStack,
+    #portfolio > .rt-VStack {
+        padding-top: 3rem;
+        padding-bottom: 3rem;
+    }
+}
+
+/* ============================================
+   RESPONSIVE - MÓVILES
+   ============================================ */
+
+@media (max-width: 768px) {
+    /* Headings responsivos */
+    .rt-Heading {
+        font-size: clamp(1.5rem, 5vw, 2.5rem);
+    }
+
+    /* Padding lateral reducido */
+    section,
+    #inicio,
+    #sobremi,
+    #skills,
+    #curriculum,
+    #portfolio,
+    #contacto {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+
+    .rt-VStack {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+
+    /* Navbar con padding reducido */
+    nav,
+    .navbar {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+
+    /* Imágenes responsive */
+    img {
+        max-width: 100%;
+        height: auto;
+    }
+
+    /* Grids a una columna */
+    .rt-Grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    /* Texto con ancho completo */
+    .rt-Text {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    /* Formularios responsive */
+    form button,
+    form input,
+    form textarea {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    /* HStack convertido en columna */
+    .rt-HStack {
+        flex-direction: column;
+        align-items: stretch;
+        width: 100%;
+    }
+
+    /* Excepción: iconos sociales en fila */
+    #inicio .rt-HStack:has(a > svg) {
+        flex-direction: row;
+        justify-content: center;
+    }
+
+    /* Botones de proyectos: ancho completo en móvil */
+    #portfolio button {
+        white-space: nowrap;
+        width: 100%;
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+
+    /* Centrar botón de CV en móvil */
+    #curriculum .rt-VStack:has(a > button) {
+        align-items: center !important;
+    }
+
+    #curriculum a:has(button) {
+        display: block;
+        text-align: center;
+    }
+
+    #curriculum button {
+        margin-left: auto !important;
+        margin-right: auto !important;
+    }
+}
+
+/* ============================================
+   RESPONSIVE - TABLETS
+   ============================================ */
+
+@media (min-width: 769px) and (max-width: 1024px) {
+    /* Grids a 2 columnas en tablets */
+    .rt-Grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    /* Padding medio para tablets */
+    section,
+    [id] {
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+    }
+}
+
+/* ============================================
+   RESPONSIVE GENERAL
+   ============================================ */
+
 @media (max-width: 1024px) {
+    /* Formulario de contacto */
+    form {
+        width: 100%;
+    }
+
+    /* Contenedores */
+    .rt-Container {
+        max-width: 100%;
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+
+    /* Box con width 100% */
+    .rt-Box {
+        width: 100%;
+    }
+
+    /* Portfolio grid responsive */
     .portfolio-grid {
-        grid-template-columns: repeat(2, 1fr) !important;
+        grid-template-columns: repeat(2, 1fr);
     }
 }
 
 @media (max-width: 640px) {
     .portfolio-grid {
-        grid-template-columns: 1fr !important;
+        grid-template-columns: 1fr;
     }
-}
 
-/* Grid responsive para skills y sobre mí */
-@media (max-width: 768px) {
+    /* Grids a una columna */
     .two-column-grid {
-        grid-template-columns: 1fr !important;
-    }
-}
-
-/* Padding responsive para móviles */
-@media (max-width: 768px) {
-    .rt-VStack {
-        padding-left: 1rem !important;
-        padding-right: 1rem !important;
+        grid-template-columns: 1fr;
     }
 }

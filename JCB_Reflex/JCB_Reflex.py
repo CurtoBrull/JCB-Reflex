@@ -29,6 +29,7 @@ def navbar() -> rx.Component:
                     rx.heading("Javier Curto", size="8", color="#d19617"),
                     href="#inicio",
                     on_click=State.close_menu,
+                    margin_left="1rem",
                 ),
                 rx.spacer(),
                 # Menú Desktop
@@ -48,6 +49,7 @@ def navbar() -> rx.Component:
                     on_click=State.toggle_menu,
                     variant="ghost",
                     class_name="mobile-menu-button",
+                    margin_right="0.5rem",
                 ),
                 width="100%",
                 align="center",
@@ -100,7 +102,7 @@ def navbar() -> rx.Component:
             ),
             width="100%",
             padding_y="1rem",
-            padding_x="2rem",
+            padding_x={"initial": "1rem", "sm": "1.5rem", "md": "2rem"},
             spacing="0",
         ),
         position="fixed",
@@ -120,18 +122,36 @@ def inicio() -> rx.Component:
             rx.image(
                 src="/img/hero2.jpg",
                 alt="Javier Curto",
-                width="200px",
-                height="200px",
+                width={"initial": "100px", "sm": "110px", "md": "120px"},
+                height={"initial": "100px", "sm": "110px", "md": "120px"},
                 border_radius="50%",
-                border="5px solid #d19617",
+                border="3px solid #d19617",
                 object_fit="cover",
             ),
-            rx.heading("JAVIER CURTO", size="9", color="white", text_align="center"),
-            rx.text(
-                "Desarrollador Backend", size="6", color="#d19617", text_align="center"
+            rx.heading(
+                "JAVIER CURTO",
+                size={"initial": "7", "sm": "8", "md": "9"},
+                color="white",
+                text_align="center",
             ),
-            rx.text("Python", size="5", color="#e5c507", text_align="center"),
-            rx.text("Java Spring", size="5", color="#e5c507", text_align="center"),
+            rx.text(
+                "Desarrollador Backend",
+                size={"initial": "4", "sm": "5", "md": "6"},
+                color="#d19617",
+                text_align="center",
+            ),
+            rx.text(
+                "Python",
+                size={"initial": "3", "sm": "4", "md": "5"},
+                color="#e5c507",
+                text_align="center",
+            ),
+            rx.text(
+                "Java Spring",
+                size={"initial": "3", "sm": "4", "md": "5"},
+                color="#e5c507",
+                text_align="center",
+            ),
             rx.hstack(
                 rx.link(
                     rx.icon("linkedin", size=32, color="white"),
@@ -155,7 +175,8 @@ def inicio() -> rx.Component:
             justify="center",
             min_height="100vh",
             padding_top="80px",
-            padding_x="2rem",
+            padding_x={"initial": "1rem", "sm": "1.5rem", "md": "2rem"},
+            padding_bottom="1rem",
             width="100%",
         ),
         id="inicio",
@@ -170,9 +191,9 @@ def sobre_mi() -> rx.Component:
         rx.vstack(
             rx.heading(
                 "SOBRE MÍ",
-                size="8",
+                size={"initial": "6", "sm": "7", "md": "8"},
                 color="#d19617",
-                margin_bottom="2rem",
+                padding="1rem",
                 text_align="start",
             ),
             rx.box(
@@ -292,7 +313,7 @@ def sobre_mi() -> rx.Component:
                             spacing="4",
                             align="center",
                         ),
-                        columns="2",
+                        columns={"initial": "1", "sm": "1", "md": "2"},
                         spacing="8",
                         width="100%",
                         margin_top="2rem",
@@ -304,8 +325,7 @@ def sobre_mi() -> rx.Component:
                 margin="0 auto",
             ),
             spacing="5",
-            padding_y="4rem",
-            padding_x="2rem",
+            padding_x={"initial": "1rem", "sm": "1.5rem", "md": "2rem"},
             width="100%",
             align="center",
         ),
@@ -321,8 +341,9 @@ def skills() -> rx.Component:
         rx.vstack(
             rx.heading(
                 "SKILLS",
-                size="8",
+                size={"initial": "6", "sm": "7", "md": "8"},
                 color="#d19617",
+                padding="1rem",
                 text_align="center",
             ),
             rx.box(
@@ -390,22 +411,22 @@ def skills() -> rx.Component:
                             spacing="4",
                             align="center",
                         ),
-                        columns="2",
+                        columns={"initial": "1", "sm": "1", "md": "2"},
                         spacing="8",
                         width="100%",
+                        padding_bottom="1rem",
                     ),
                     max_width="1400px",
                     margin="0 auto",
                 ),
                 spacing="5",
-                padding_y="2rem",
-                padding_x="2rem",
+                padding_y={"initial": "1rem", "sm": "1.5rem", "md": "2rem"},
+                padding_x={"initial": "1rem", "sm": "1.5rem", "md": "2rem"},
                 width="100%",
                 align="center",
             ),
             spacing="5",
-            padding_y="4rem",
-            padding_x="2rem",
+            padding_x={"initial": "1rem", "sm": "1.5rem", "md": "2rem"},
             width="100%",
             align="center",
         ),
@@ -421,8 +442,9 @@ def curriculum() -> rx.Component:
         rx.vstack(
             rx.heading(
                 "CURRICULUM",
-                size="8",
+                size={"initial": "6", "sm": "7", "md": "8"},
                 color="#d19617",
+                padding="0 1rem",
                 text_align="center",
             ),
             rx.box(
@@ -539,7 +561,7 @@ def curriculum() -> rx.Component:
                             spacing="4",
                             align="center",
                         ),
-                        columns="2",
+                        columns={"initial": "1", "sm": "1", "md": "2"},
                         spacing="8",
                         width="100%",
                     ),
@@ -547,8 +569,8 @@ def curriculum() -> rx.Component:
                     margin="0 auto",
                 ),
                 spacing="5",
-                padding_y="2rem",
-                padding_x="2rem",
+                padding_y={"initial": "1rem", "sm": "1.5rem", "md": "2rem"},
+                padding_x={"initial": "1rem", "sm": "1.5rem", "md": "2rem"},
                 width="100%",
                 align="center",
             ),
@@ -556,7 +578,7 @@ def curriculum() -> rx.Component:
             rx.vstack(
                 rx.heading(
                     "Currículum Vitae",
-                    size="6",
+                    size={"initial": "5", "sm": "5", "md": "6"},
                     color="#d19617",
                     margin_bottom="1rem",
                 ),
@@ -574,9 +596,9 @@ def curriculum() -> rx.Component:
                 width="100%",
                 margin_top="2rem",
             ),
-            spacing="5",
-            padding_y="4rem",
-            padding_x="2rem",
+            spacing="3",
+            # Removed inline padding_y to allow stylesheet to control spacing for better specificity
+            padding_x={"initial": "1rem", "sm": "1.5rem", "md": "2rem"},
             width="100%",
             align="center",
         ),
@@ -607,7 +629,7 @@ def project_card(
             ),
             rx.vstack(
                 rx.heading(title, size="5", color="white"),
-                rx.text(description, color="white", size="2"),
+                rx.text(description, color="white", size="2", height="40px"),
                 rx.text(tech, color="#d19617", size="1"),
                 rx.hstack(
                     rx.cond(
@@ -647,7 +669,14 @@ def portfolio() -> rx.Component:
     """Sección de portfolio con proyectos"""
     return rx.box(
         rx.vstack(
-            rx.heading("PORTFOLIO", size="8", color="#d19617", margin_bottom="2rem"),
+            rx.heading(
+                "PORTFOLIO",
+                size={"initial": "6", "sm": "7", "md": "8"},
+                color="#d19617",
+                padding="1rem",
+                text_align="center",
+                width="100%",
+            ),
             rx.grid(
                 project_card(
                     "Web Personal ASTRO",
@@ -710,14 +739,17 @@ def portfolio() -> rx.Component:
                     "https://github.com/CurtoBrull/grocery-ticket-ai",
                     "https://grocery-ticket-ai.vercel.app/",
                 ),
-                columns="3",
+                columns={"initial": "1", "sm": "1", "md": "2", "lg": "3"},
                 spacing="5",
                 width="100%",
             ),
-            spacing="5",
-            padding_y="4rem",
-            padding_x="2rem",
+            spacing="3",
+            padding_x={"initial": "1rem", "sm": "1.5rem", "md": "2rem"},
             width="100%",
+            max_width="1400px",
+            margin="0 auto",
+            align="center",
+            padding_bottom="1rem",
         ),
         id="portfolio",
         background="#252a2e",
@@ -731,8 +763,9 @@ def contacto() -> rx.Component:
         rx.vstack(
             rx.heading(
                 "CONTACTO",
-                size="8",
+                size={"initial": "6", "sm": "7", "md": "8"},
                 color="#d19617",
+                padding="0 1rem",
                 text_align="center",
             ),
             rx.box(
@@ -749,28 +782,28 @@ def contacto() -> rx.Component:
                         # Formulario con FormSubmit
                         rx.html(
                             """
-                            <form action="https://formsubmit.co/curto.brull.javier@jcurtobr.eu" method="POST" style="width: 100%; display: flex; flex-direction: column; align-items: center; gap: 1rem;">
+                            <form action="https://formsubmit.co/curto.brull.javier@jcurtobr.eu" method="POST" target="_blank" style="width: 100%; display: flex; flex-direction: column; align-items: center; gap: 1rem;">
                                 <!-- Campos ocultos de configuración FormSubmit -->
                                 <input type="hidden" name="_subject" value="Nuevo mensaje desde Portfolio Web">
                                 <input type="hidden" name="_captcha" value="false">
                                 <input type="hidden" name="_template" value="table">
                                 <input type="text" name="_honey" style="display:none">
-                                
+
                                 <!-- Campos visibles -->
-                                <input type="text" name="name" placeholder="Nombre *" required 
-                                    style="width: 80%; height: 3rem; padding: 0.75rem; border-radius: 0.375rem; border: 1px solid #374151; background: #1f2937; color: white; font-size: 1rem;">
-                                
+                                <input type="text" name="name" placeholder="Nombre *" required
+                                    style="width: 90%; max-width: 100%; height: 3rem; padding: 0.75rem; border-radius: 0.375rem; border: 1px solid #374151; background: #1f2937; color: white; font-size: 1rem;">
+
                                 <input type="tel" name="phone" placeholder="Teléfono"
-                                    style="width: 80%; height: 3rem; padding: 0.75rem; border-radius: 0.375rem; border: 1px solid #374151; background: #1f2937; color: white; font-size: 1rem;">
-                                
+                                    style="width: 90%; max-width: 100%; height: 3rem; padding: 0.75rem; border-radius: 0.375rem; border: 1px solid #374151; background: #1f2937; color: white; font-size: 1rem;">
+
                                 <input type="email" name="email" placeholder="Email *" required
-                                    style="width: 80%; height: 3rem; padding: 0.75rem; border-radius: 0.375rem; border: 1px solid #374151; background: #1f2937; color: white; font-size: 1rem;">
-                                
+                                    style="width: 90%; max-width: 100%; height: 3rem; padding: 0.75rem; border-radius: 0.375rem; border: 1px solid #374151; background: #1f2937; color: white; font-size: 1rem;">
+
                                 <textarea name="message" placeholder="Mensaje *" required rows="8"
-                                    style="width: 80%; min-height: 150px; padding: 0.75rem; border-radius: 0.375rem; border: 1px solid #374151; background: #1f2937; color: white; font-size: 1rem; resize: vertical;"></textarea>
-                                
+                                    style="width: 90%; max-width: 100%; min-height: 150px; padding: 0.75rem; border-radius: 0.375rem; border: 1px solid #374151; background: #1f2937; color: white; font-size: 1rem; resize: vertical;"></textarea>
+
                                 <button type="submit"
-                                    style="width: 80%; height: 3rem; background: #d19617; color: white; border: none; border-radius: 0.375rem; font-size: 1rem; font-weight: 600; cursor: pointer; transition: background 0.3s;">
+                                    style="width: 90%; max-width: 100%; height: 3rem; background: #d19617; color: white; border: none; border-radius: 0.375rem; font-size: 1rem; font-weight: 600; cursor: pointer; transition: background 0.3s;">
                                     Enviar Mensaje
                                 </button>
                             </form>
@@ -820,7 +853,7 @@ def contacto() -> rx.Component:
                             spacing="4",
                             align="center",
                         ),
-                        columns="2",
+                        columns={"initial": "1", "sm": "1", "md": "2"},
                         spacing="8",
                         width="100%",
                     ),
@@ -828,16 +861,16 @@ def contacto() -> rx.Component:
                     margin="0 auto",
                 ),
                 spacing="5",
-                padding_y="2rem",
-                padding_x="2rem",
+                padding_y={"initial": "1rem", "sm": "1.5rem", "md": "2rem"},
+                padding_x={"initial": "1rem", "sm": "1.5rem", "md": "2rem"},
                 width="100%",
                 align="center",
             ),
-            spacing="5",
-            padding_y="4rem",
-            padding_x="2rem",
+            spacing="3",
+            padding_x={"initial": "1rem", "sm": "1.5rem", "md": "2rem"},
             width="100%",
             align="center",
+            padding_bottom="1rem",
         ),
         id="contacto",
         background="#1e2326",
@@ -879,6 +912,8 @@ def footer() -> rx.Component:
                 f"© Javier Curto Brull - {datetime.now().year}",
                 color="white",
                 size="2",
+                text_align="center",
+                width="100%",
             ),
             spacing="4",
             align="center",
