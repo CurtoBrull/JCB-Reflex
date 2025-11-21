@@ -146,7 +146,7 @@ El diseño es completamente responsive con breakpoints en:
 
 Dado que Reflex requiere un servidor ASGI/WebSocket que no está disponible en hosting compartido tradicional, se despliega como **sitio estático** con FormSubmit para el formulario de contacto.
 
-#### Pasos para desplegar:
+#### Pasos para desplegar
 
 1. **Compilar versión estática** (solo frontend):
 
@@ -179,7 +179,7 @@ tar -czf ~/portfolio-deploy.tar.gz .
    - Haz clic en el enlace de activación para validar tu email
    - Después de esto, los mensajes llegarán directamente a tu correo
 
-#### Notas importantes:
+#### Notas importantes
 
 - ✅ **No requiere backend** - Todo el sitio es HTML/CSS/JS estático
 - ✅ **FormSubmit gratuito** - Maneja el envío de formularios sin servidor
@@ -187,7 +187,7 @@ tar -czf ~/portfolio-deploy.tar.gz .
 - ⚠️ **Sin funcionalidad del backend** - El State de Reflex no funciona en estático
 - ⚠️ **Archivos estáticos solamente** - Los cambios requieren recompilar y resubir
 
-#### Alternativas para deployment con backend completo:
+#### Alternativas para deployment con backend completo
 
 Si necesitas las funcionalidades completas de Reflex (State, WebSocket, backend):
 
