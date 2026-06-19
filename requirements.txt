@@ -1,4 +1,1 @@
-
-reflex==0.8.20
-resend
-python-dotenv
+reflex==0.9.5.post2

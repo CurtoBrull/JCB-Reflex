@@ -165,3 +165,155 @@ a:has(img[src*="reflex" i]) {
         padding-right: 1rem !important;
     }
 }
+
+/* ============================================
+   HERO SECTION ANIMATIONS
+   ============================================ */
+
+/* Animación de fondo con gradiente sutil */
+.hero-bg-animation {
+    background: 
+        radial-gradient(ellipse at 20% 80%, rgba(209, 150, 23, 0.08) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 20%, rgba(209, 150, 23, 0.05) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 50%, rgba(229, 197, 7, 0.03) 0%, transparent 70%);
+    animation: heroGradient 8s ease-in-out infinite;
+}
+
+@keyframes heroGradient {
+    0%, 100% {
+        background-position: 0% 50%;
+        opacity: 0.6;
+    }
+    50% {
+        background-position: 100% 50%;
+        opacity: 1;
+    }
+}
+
+/* Contenedor de imagen con glow effect */
+.hero-image-container {
+    position: relative;
+    animation: fadeInDown 0.8s ease-out;
+}
+
+.hero-image-container::before {
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    right: -10px;
+    bottom: -10px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, rgba(209, 150, 23, 0.3), transparent, rgba(229, 197, 7, 0.2));
+    z-index: -1;
+    animation: glowPulse 3s ease-in-out infinite;
+}
+
+@keyframes glowPulse {
+    0%, 100% {
+        opacity: 0.5;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.8;
+        transform: scale(1.05);
+    }
+}
+
+/* Animación de entrada fade-in-up */
+.fade-in-up {
+    opacity: 0;
+    transform: translateY(30px);
+    animation: fadeInUp 0.8s ease-out forwards;
+}
+
+.delay-1 { animation-delay: 0.2s; }
+.delay-2 { animation-delay: 0.4s; }
+.delay-3 { animation-delay: 0.6s; }
+.delay-4 { animation-delay: 0.8s; }
+.delay-5 { animation-delay: 1s; }
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Typing cursor animation */
+.typing-cursor {
+    animation: blink 1s step-end infinite;
+    font-weight: bold;
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
+
+/* Hero typing container */
+.hero-typing {
+    min-height: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Social icons hover animation */
+.social-icon {
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.social-icon:hover {
+    transform: translateY(-3px) scale(1.1);
+    filter: drop-shadow(0 0 10px rgba(209, 150, 23, 0.6));
+}
+
+/* CTA Button animation */
+.cta-button {
+    transition: all 0.3s ease !important;
+    animation: fadeInUp 0.8s ease-out 1.2s forwards;
+    opacity: 0;
+}
+
+.cta-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(209, 150, 23, 0.4) !important;
+}
+
+/* Pulse animation for CTA */
+.pulse-animation {
+    animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        box-shadow: 0 0 0 0 rgba(209, 150, 23, 0.4);
+    }
+    50% {
+        box-shadow: 0 0 0 15px rgba(209, 150, 23, 0);
+    }
+}
+
+/* Hero name styling */
+.hero-name {
+    font-family: 'Righteous', cursive !important;
+    letter-spacing: 4px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
