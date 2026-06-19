@@ -10,45 +10,6 @@ class State(rx.State):
 
     show_mobile_menu: bool = False
 
-    # Typing effect state for Hero section
-    texts: list[str] = ["Desarrollador Backend", "Java Spring Developer", "Python Enthusiast"]
-    text_index: int = 0
-    char_index: int = 1
-    is_deleting: bool = False
-    typing_paused_counter: int = 0
-    typed_text: str = "D"
-
-    # GitHub stars
-    github_stars: dict[str, int] = {
-        "CurtoBrull/AstroJCB": 0,
-        "CurtoBrull/API_SPRING": 0,
-        "CurtoBrull/OAuth2-Spring-Security": 0,
-        "CurtoBrull/GithubApiSpring": 0,
-        "CurtoBrull/inventario-congelador": 0,
-        "CurtoBrull/NoPokeForYou": 0,
-        "CurtoBrull/generador-ideas-gemini": 0,
-        "CurtoBrull/grocery-ticket-ai": 0,
-    }
-
-    async def fetch_github_stars(self):
-        try:
-            import httpx
-            stars = dict(self.github_stars)
-            async with httpx.AsyncClient(timeout=5.0) as client:
-                for repo in stars:
-                    try:
-                        r = await client.get(
-                            f"https://api.github.com/repos/{repo}",
-                            headers={"Accept": "application/vnd.github.v3+json"},
-                        )
-                        if r.status_code == 200:
-                            stars[repo] = r.json().get("stargazers_count", 0)
-                    except Exception:
-                        pass
-            self.github_stars = stars
-        except Exception:
-            pass
-
     def toggle_menu(self):
         """Toggle mobile menu visibility"""
         self.show_mobile_menu = not self.show_mobile_menu
@@ -56,30 +17,6 @@ class State(rx.State):
     def close_menu(self):
         """Close mobile menu"""
         self.show_mobile_menu = False
-
-    def update_typing(self, _ts: str = ""):
-        """Update typing effect - called by rx.moment every 200ms"""
-        if self.typing_paused_counter > 0:
-            self.typing_paused_counter -= 1
-            return
-
-        current_text = self.texts[self.text_index]
-
-        if self.is_deleting:
-            if self.char_index > 1:
-                self.char_index -= 1
-            else:
-                self.is_deleting = False
-                self.text_index = (self.text_index + 1) % len(self.texts)
-                self.typing_paused_counter = 3
-        else:
-            if self.char_index < len(current_text):
-                self.char_index += 1
-            else:
-                self.typing_paused_counter = 13
-                self.is_deleting = True
-
-        self.typed_text = self.texts[self.text_index][:self.char_index]
 
 
 def navbar() -> rx.Component:
@@ -199,15 +136,16 @@ def inicio() -> rx.Component:
     """Sección de inicio con presentación"""
     return rx.box(
         rx.vstack(
-            rx.image(
-                src="/img/hero2.jpg",
-                alt="Javier Curto",
-                width="200px",
-                height="200px",
-                border_radius="50%",
-                border="5px solid #d19617",
-                object_fit="cover",
-                class_name="hero-image-container",
+            rx.box(
+                rx.box(class_name="hero-ping"),
+                rx.box(class_name="hero-ping hero-ping-2"),
+                rx.box(class_name="hero-ping hero-ping-3"),
+                rx.image(
+                    src="/img/hero2.jpg",
+                    alt="Javier Curto",
+                    class_name="hero-img",
+                ),
+                class_name="hero-image-wrapper",
             ),
             rx.heading(
                 "JAVIER CURTO",
@@ -216,25 +154,11 @@ def inicio() -> rx.Component:
                 text_align="center",
                 class_name="hero-name fade-in-up",
             ),
-            # Typing effect para el puesto - usa estado de Reflex con interval timer
-            rx.box(
-                rx.hstack(
-                    rx.text(
-                        State.typed_text,
-                        size="6",
-                        color="#d19617",
-                        text_align="center",
-                        class_name="hero-typing",
-                    ),
-                    rx.text(
-                        "▌",
-                        size="6",
-                        color="#d19617",
-                        class_name="typing-cursor",
-                    ),
-                    spacing="0",
-                    align="center",
-                ),
+            rx.text(
+                "Desarrollador Backend",
+                size="6",
+                color="#d19617",
+                text_align="center",
                 class_name="fade-in-up delay-1",
             ),
             # Subtítulos adicionales
@@ -766,7 +690,6 @@ def project_card(
     tech: str,
     github_url: str = "",
     demo_url: str = "",
-    github_repo: str = "",
 ) -> rx.Component:
     """Tarjeta de proyecto individual"""
     return rx.box(
@@ -800,16 +723,6 @@ def project_card(
                     class_name="tech-badge",
                 ),
                 rx.hstack(
-                    # Estrellas GitHub (dinámicas)
-                    *([rx.cond(
-                        State.github_stars[github_repo] > 0,
-                        rx.hstack(
-                            rx.text("★", color="#d19617", size="2"),
-                            rx.text(State.github_stars[github_repo], size="1", color="#999"),
-                            spacing="1",
-                            align="center",
-                        ),
-                    )] if github_repo else []),
                     rx.spacer(),
                     rx.cond(
                         github_url != "",
@@ -862,7 +775,6 @@ def portfolio() -> rx.Component:
                     "/img/webAstroJCB.webp",
                     "Astro • Tailwind CSS",
                     "https://github.com/CurtoBrull/AstroJCB",
-                    github_repo="CurtoBrull/AstroJCB",
                 ), class_name="scroll-reveal sr-delay-1"),
                 rx.box(project_card(
                     "API Spring JPA",
@@ -870,7 +782,6 @@ def portfolio() -> rx.Component:
                     "/img/API_SPRING.webp",
                     "Spring Boot • JPA • MySQL",
                     "https://github.com/CurtoBrull/API_SPRING",
-                    github_repo="CurtoBrull/API_SPRING",
                 ), class_name="scroll-reveal sr-delay-2"),
                 rx.box(project_card(
                     "OAuth2 con Spring Security",
@@ -878,7 +789,6 @@ def portfolio() -> rx.Component:
                     "/img/postmanPOSTCode.png",
                     "Spring Security • OAuth2 • Spring Boot",
                     "https://github.com/CurtoBrull/OAuth2-Spring-Security",
-                    github_repo="CurtoBrull/OAuth2-Spring-Security",
                 ), class_name="scroll-reveal sr-delay-3"),
                 rx.box(project_card(
                     "GitHub User Activity App",
@@ -887,7 +797,6 @@ def portfolio() -> rx.Component:
                     "Spring Boot • GitHub API",
                     "https://github.com/CurtoBrull/GithubApiSpring",
                     "https://githubapispring.onrender.com/",
-                    github_repo="CurtoBrull/GithubApiSpring",
                 ), class_name="scroll-reveal sr-delay-1"),
                 rx.box(project_card(
                     "Inventario del Congelador",
@@ -896,7 +805,6 @@ def portfolio() -> rx.Component:
                     "Next.js • React • Supabase",
                     "https://github.com/CurtoBrull/inventario-congelador",
                     "https://congelador-inventario.vercel.app/",
-                    github_repo="CurtoBrull/inventario-congelador",
                 ), class_name="scroll-reveal sr-delay-2"),
                 rx.box(project_card(
                     "NoPokeForYou",
@@ -905,7 +813,6 @@ def portfolio() -> rx.Component:
                     "React • Spring Boot • Gemini AI",
                     "https://github.com/CurtoBrull/NoPokeForYou",
                     "https://nopokeforyou-front.onrender.com/",
-                    github_repo="CurtoBrull/NoPokeForYou",
                 ), class_name="scroll-reveal sr-delay-3"),
                 rx.box(project_card(
                     "Generador de Ideas Gemini",
@@ -914,7 +821,6 @@ def portfolio() -> rx.Component:
                     "Python • Gradio • Gemini AI",
                     "https://github.com/CurtoBrull/generador-ideas-gemini",
                     "https://generador-ideas-gemini.onrender.com/",
-                    github_repo="CurtoBrull/generador-ideas-gemini",
                 ), class_name="scroll-reveal sr-delay-1"),
                 rx.box(project_card(
                     "Grocery Ticket AI",
@@ -923,7 +829,6 @@ def portfolio() -> rx.Component:
                     "Tesseract.js • Gemini API • Supabase",
                     "https://github.com/CurtoBrull/grocery-ticket-ai",
                     "https://grocery-ticket-ai.vercel.app/",
-                    github_repo="CurtoBrull/grocery-ticket-ai",
                 ), class_name="scroll-reveal sr-delay-2"),
                 columns="3",
                 spacing="5",
@@ -1125,8 +1030,6 @@ def index() -> rx.Component:
         rx.script(src="/scroll-progress.js"),
         rx.script(src="/stats-counter.js"),
         navbar(),
-        # Timer para el typing effect: on_change dispara cada 200ms
-        rx.moment(interval=200, format="x", on_change=State.update_typing),
         inicio(),
         sobre_mi(),
         stats(),
@@ -1156,5 +1059,4 @@ app.add_page(
     index,
     title="Javier Curto | Desarrollador Backend Java Python",
     description="Portfolio personal de Javier Curto - Desarrollador Backend Java Python",
-    on_load=State.fetch_github_stars,
 )

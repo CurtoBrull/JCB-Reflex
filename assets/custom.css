@@ -192,23 +192,76 @@ a:has(img[src*="reflex" i]) {
     }
 }
 
-/* Contenedor de imagen con glow effect */
-.hero-image-container {
+/* ── Hero: spinning conic border + sonar rings ───────────────────────────── */
+.hero-image-wrapper {
     position: relative;
+    width: 208px;
+    height: 208px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
     animation: fadeInDown 0.8s ease-out;
 }
 
-.hero-image-container::before {
+/* Arco cónico giratorio */
+.hero-image-wrapper::before {
     content: '';
     position: absolute;
-    top: -10px;
-    left: -10px;
-    right: -10px;
-    bottom: -10px;
+    inset: 0;
     border-radius: 50%;
-    background: linear-gradient(135deg, rgba(209, 150, 23, 0.3), transparent, rgba(229, 197, 7, 0.2));
-    z-index: -1;
-    animation: glowPulse 3s ease-in-out infinite;
+    background: conic-gradient(
+        from 0deg,
+        #d19617   0deg,
+        #e5c507  50deg,
+        rgba(255, 252, 210, 0.45) 95deg,
+        transparent 135deg,
+        transparent 360deg
+    );
+    animation: rotateBorder 2.5s linear infinite;
+}
+
+/* Máscara oscura interior → efecto borde */
+.hero-image-wrapper::after {
+    content: '';
+    position: absolute;
+    inset: 4px;
+    border-radius: 50%;
+    background: #1e2326;
+    z-index: 1;
+}
+
+@keyframes rotateBorder {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+}
+
+/* Foto encima de la máscara */
+.hero-img {
+    position: relative;
+    z-index: 2;
+    border-radius: 50%;
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    display: block;
+}
+
+/* Anillos de sonar */
+.hero-ping {
+    position: absolute;
+    inset: -12px;
+    border-radius: 50%;
+    border: 1.5px solid rgba(209, 150, 23, 0.55);
+    animation: heroPing 2.8s ease-out infinite;
+    z-index: 0;
+}
+.hero-ping-2 { animation-delay: 0.93s; }
+.hero-ping-3 { animation-delay: 1.86s; }
+
+@keyframes heroPing {
+    0%   { transform: scale(1);   opacity: 0.65; }
+    100% { transform: scale(1.75); opacity: 0; }
 }
 
 @keyframes glowPulse {
