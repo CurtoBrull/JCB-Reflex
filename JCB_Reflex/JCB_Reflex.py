@@ -19,6 +19,15 @@ class State(rx.State):
         self.show_mobile_menu = False
 
 
+class ThemeState(rx.State):
+    """Estado del tema (claro/oscuro)."""
+    is_dark: bool = True
+
+    def toggle_theme(self):
+        """Alterna entre tema claro y oscuro."""
+        self.is_dark = not self.is_dark
+
+
 def navbar() -> rx.Component:
     """Barra de navegación fija"""
     return rx.box(
@@ -41,6 +50,19 @@ def navbar() -> rx.Component:
                     rx.link("CONTACTO", href="#contacto", class_name="nav-link"),
                     spacing="6",
                     class_name="desktop-menu",
+                ),
+                # Botón toggle tema claro/oscuro (JS puro - funciona en static export)
+                rx.html(
+                    """
+                    <button onclick="(function(){var n=!document.documentElement.classList.contains('light-theme');document.documentElement.classList.toggle('light-theme',n);localStorage.setItem('theme',n?'light':'dark');var s=document.getElementById('theme-icon-sun'),m=document.getElementById('theme-icon-moon');if(s)s.style.display=n?'inline':'none';if(m)m.style.display=n?'none':'inline';})()" class="theme-toggle" aria-label="Toggle theme" style="background:none;border:none;cursor:pointer;padding:0.5rem;color:#d19617;">
+                        <span id="theme-icon-sun" style="display:none;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+                        </span>
+                        <span id="theme-icon-moon" style="display:inline;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                        </span>
+                    </button>
+                    """
                 ),
                 # Botón hamburguesa (mobile)
                 rx.button(
@@ -106,10 +128,9 @@ def navbar() -> rx.Component:
         position="fixed",
         top="0",
         width="100%",
-        background="rgba(30, 35, 38, 0.95)",
-        backdrop_filter="blur(10px)",
+        class_name="bg-navbar-blur",
         z_index="1000",
-        box_shadow="0 2px 10px rgba(0,0,0,0.3)",
+        box_shadow="var(--shadow-sm)",
     )
 
 
@@ -351,7 +372,7 @@ def sobre_mi() -> rx.Component:
             align="center",
         ),
         id="sobremi",
-        background="#1e2326",
+        class_name="section-primary",
         width="100%",
     )
 
@@ -389,12 +410,10 @@ def stats() -> rx.Component:
             class_name="stats-grid",
         ),
         id="stats",
-        background="#252a2e",
+        class_name="stats-grid section-secondary",
         width="100%",
         padding_y="3rem",
         padding_x="2rem",
-        border_top="1px solid rgba(209, 150, 23, 0.12)",
-        border_bottom="1px solid rgba(209, 150, 23, 0.12)",
     )
 
 
@@ -534,7 +553,7 @@ def skills() -> rx.Component:
             align="center",
         ),
         id="skills",
-        background="#252a2e",
+        class_name="section-secondary",
         width="100%",
     )
 
@@ -666,6 +685,7 @@ def curriculum() -> rx.Component:
                     color="white",
                     variant="soft",
                     gap="0.5rem",
+                    class_name="cv-btn",
                 ),
                 href="/cv/CV_Javier_Curto_Brull.pdf",
                 is_external=True,
@@ -678,7 +698,7 @@ def curriculum() -> rx.Component:
             align="center",
         ),
         id="curriculum",
-        background="#1e2326",
+        class_name="section-primary",
         width="100%",
     )
 
@@ -752,13 +772,12 @@ def project_card(
             spacing="0",
             width="100%",
         ),
-        background="#1e2326",
+        class_name="bg-card project-card",
         border_radius="8px",
         overflow="hidden",
         box_shadow="0 4px 6px rgba(0,0,0,0.3)",
         transition="transform 0.3s ease, box-shadow 0.3s ease",
         _hover={"transform": "translateY(-6px)", "box_shadow": "0 12px 30px rgba(209, 150, 23, 0.22)"},
-        class_name="project-card",
         width="100%",
     )
 
@@ -840,7 +859,7 @@ def portfolio() -> rx.Component:
             width="100%",
         ),
         id="portfolio",
-        background="#252a2e",
+        class_name="section-secondary",
         width="100%",
     )
 
@@ -964,7 +983,7 @@ def contacto() -> rx.Component:
             align="center",
         ),
         id="contacto",
-        background="#1e2326",
+        class_name="section-primary",
         width="100%",
     )
 
@@ -994,7 +1013,7 @@ def footer() -> rx.Component:
         rx.vstack(
             rx.link(
                 rx.button(
-                    rx.icon("arrow-up", size=24),
+                    rx.icon("arrow-up", size=24, class_name="footer-up-icon"),
                     variant="ghost",
                     color="white",
                 ),
@@ -1017,8 +1036,7 @@ def footer() -> rx.Component:
             padding_x="2rem",
             width="100%",
         ),
-        background="#252a2e",
-        border_top="1px solid rgba(209, 150, 23, 0.3)",
+        class_name="section-primary",
         width="100%",
     )
 
@@ -1026,6 +1044,7 @@ def footer() -> rx.Component:
 def index() -> rx.Component:
     """Página principal con todas las secciones"""
     return rx.box(
+        rx.script(src="/theme.js"),
         rx.script(src="/scroll-reveal.js"),
         rx.script(src="/scroll-progress.js"),
         rx.script(src="/stats-counter.js"),
@@ -1038,7 +1057,6 @@ def index() -> rx.Component:
         portfolio(),
         contacto(),
         footer(),
-        background="#1e2326",
     )
 
 

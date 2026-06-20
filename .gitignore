@@ -9,6 +9,7 @@ reflex.db
 
 # Python
 venv/
+venv_wsl/
 *.egg-info/
 dist/
 build/
