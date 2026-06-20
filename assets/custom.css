@@ -701,6 +701,9 @@ html.light-theme .hero-bg-animation {
    PROJECT CARDS
    ============================================ */
 
+/* Los wrappers del grid también ocupan el 100% para que las cards igualen altura */
+#portfolio .scroll-reveal { height: 100%; }
+
 .project-card {
     position: relative;
 }

@@ -733,8 +733,9 @@ def project_card(
                 position="relative",
                 width="100%",
                 overflow="hidden",
+                flex_shrink="0",
             ),
-            # Contenido
+            # Contenido — flex=1 para ocupar el espacio restante, justify=between para botones al fondo
             rx.vstack(
                 rx.heading(title, size="5", color="white"),
                 rx.text(description, color="white", size="2", line_height="1.5"),
@@ -768,9 +769,12 @@ def project_card(
                 padding="1rem",
                 align="start",
                 width="100%",
+                flex="1",
+                justify="between",
             ),
             spacing="0",
             width="100%",
+            height="100%",
         ),
         class_name="bg-card project-card",
         border_radius="8px",
@@ -779,6 +783,7 @@ def project_card(
         transition="transform 0.3s ease, box-shadow 0.3s ease",
         _hover={"transform": "translateY(-6px)", "box_shadow": "0 12px 30px rgba(209, 150, 23, 0.22)"},
         width="100%",
+        height="100%",
     )
 
 
