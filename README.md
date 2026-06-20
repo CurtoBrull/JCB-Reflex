@@ -1,223 +1,121 @@
 # Portfolio Personal - Reflex Python
 
-Este es mi portfolio personal desarrollado con **Reflex**, un framework Python moderno para crear aplicaciones web fullstack.
+Portfolio personal desarrollado con **Reflex 0.9.x** (framework Python para web) y desplegado como **sitio estático** en Hostinger.
 
-## 🚀 Características
+## Características
 
-- **Portfolio completo** con todas las secciones: Inicio, Sobre Mí, Skills, Curriculum, Portfolio y Contacto
-- **Diseño responsive** que se adapta a cualquier dispositivo
-- **Navegación suave** entre secciones
-- **Menú móvil** hamburguesa para pantallas pequeñas
-- **8 proyectos destacados** con enlaces a GitHub y demos en vivo
-- **Formulario de contacto** integrado con FormSubmit
-- **Estilos personalizados** con colores corporativos (#d19617)
+- Secciones: Inicio, Sobre Mí, Stats, Skills, Curriculum, Portfolio y Contacto
+- Modo claro/oscuro con persistencia en localStorage
+- Contadores animados (IntersectionObserver + requestAnimationFrame)
+- Timeline visual para CV
+- Iconos de tecnologías via Devicons
+- Formulario de contacto con FormSubmit
+- Responsive con menú hamburguesa para móvil
+- Animaciones scroll-reveal y progreso de scroll
 
-## 📋 Requisitos
+## Requisitos
 
 - Python 3.10 o superior
-- pip (gestor de paquetes de Python)
+- Node.js 18 o superior (Reflex lo gestiona automáticamente)
 
-## 🛠️ Instalación
-
-1. **Clonar el repositorio** (o navegar al directorio del proyecto):
+## Instalación
 
 ```bash
-cd ~/workspace/JCB-Reflex
-```
+# Clonar el repositorio
+git clone https://github.com/CurtoBrull/JCB-Reflex.git
+cd JCB-Reflex
 
-2. **Crear y activar el entorno virtual**:
+# Crear y activar entorno virtual
+python -m venv venv
+source venv/bin/activate        # Linux/Mac
+# venv\Scripts\activate         # Windows
 
-```bash
-python3.12 -m venv venv
-source venv/bin/activate  # En Windows: venv\Scripts\activate
-```
-
-3. **Instalar dependencias**:
-
-```bash
+# Instalar dependencias
 pip install -r requirements.txt
 ```
 
-4. **Configurar variables de entorno**:
-
-Crea un archivo `.env` en la raíz del proyecto con las siguientes variables:
-
-```env
-# Configuración SMTP para envío de correos
-SMTP_HOST=tu-servidor-smtp.com
-SMTP_PORT=465
-SMTP_USER=tu-email@dominio.com
-SMTP_PASS=tu-contraseña
-```
-
-**Ejemplo para Gmail:**
-
-```env
-SMTP_HOST=smtp.gmail.com
-SMTP_PORT=587
-SMTP_USER=tu-email@gmail.com
-SMTP_PASS=tu-app-password
-```
-
-**Ejemplo para servidor propio:**
-
-```env
-SMTP_HOST=jcurtobr.eu
-SMTP_PORT=465
-SMTP_USER=curto.brull.javier@jcurtobr.eu
-SMTP_PASS=tu-contraseña
-```
-
-> **Nota:**
->
-> - Puerto **465** usa SSL directo
-> - Puerto **587** usa STARTTLS
-> - Para Gmail necesitas crear una [contraseña de aplicación](https://support.google.com/accounts/answer/185833)
-
-## 🚀 Ejecución
-
-Para ejecutar el proyecto en modo desarrollo:
+## Desarrollo local
 
 ```bash
-# Asegúrate de estar en el directorio del proyecto y con el entorno virtual activado
 source venv/bin/activate
 reflex run
 ```
 
-El proyecto estará disponible en:
+- Frontend: <http://localhost:3000/>
+- Backend: <http://0.0.0.0:8000>
 
-- **Frontend**: <http://localhost:3000/>
-- **Backend**: <http://0.0.0.0:8000>
+## Despliegue en Hostinger
 
-## 📁 Estructura del Proyecto
+El sitio se exporta como HTML/CSS/JS estático y se sube al hosting compartido.
+
+### 1. Generar el build estático
+
+```bash
+reflex export --frontend-only --no-zip
+```
+
+Los archivos se generan en `.web/build/client/`.
+
+### 2. Subir a Hostinger
+
+**Opción A — File Manager (panel Hostinger):**
+
+1. Accede a [hpanel.hostinger.com](https://hpanel.hostinger.com)
+2. Ve a **Files → File Manager → public_html/**
+3. Elimina el contenido anterior de `public_html/`
+4. Sube **todo el contenido** de `.web/build/client/`
+5. Sube el archivo `.htaccess` de la raíz del proyecto a `public_html/`
+
+**Opción B — FTP/SFTP:**
+
+```bash
+# Con lftp (Linux/Mac/WSL)
+lftp -u usuario,contraseña ftp.jcurtobr.eu
+mirror --reverse --delete .web/build/client/ /public_html/
+put .htaccess -o /public_html/.htaccess
+quit
+```
+
+### Notas de despliegue
+
+- El `.htaccess` configura la reescritura de rutas SPA y sirve ficheros `.gz` precomprimidos
+- Sin backend activo: el State de Reflex y WebSocket no funcionan (diseño intencionado)
+- El formulario de contacto funciona via [FormSubmit.co](https://formsubmit.co) sin servidor propio
+
+## Estructura del proyecto
 
 ```text
 JCB-Reflex/
 ├── JCB_Reflex/
-│   ├── JCB_Reflex.py      # Archivo principal con todos los componentes
-│   └── __init__.py
+│   └── JCB_Reflex.py       # Componentes y lógica de la app
 ├── assets/
-│   ├── img/               # Imágenes del portfolio
-│   ├── cv/                # CV en PDF
-│   ├── custom.css         # Estilos personalizados
+│   ├── img/                # Imágenes (hero, proyectos)
+│   ├── cv/                 # CV en PDF
+│   ├── custom.css          # Estilos y tema claro/oscuro
+│   ├── theme.js            # Inicialización del tema (localStorage)
+│   ├── scroll-reveal.js    # Animaciones de entrada al hacer scroll
+│   ├── scroll-progress.js  # Barra de progreso de scroll
+│   ├── stats-counter.js    # Contadores animados
 │   └── favicon.ico
-├── rxconfig.py            # Configuración de Reflex
-├── requirements.txt       # Dependencias Python
-└── venv/                  # Entorno virtual
+├── .htaccess               # Configuración Apache para Hostinger
+├── rxconfig.py             # Configuración de Reflex
+└── requirements.txt        # Dependencias Python
 ```
 
-## 🎨 Tecnologías Utilizadas
+## Tecnologías
 
-- **Reflex 0.8.20** - Framework Python para aplicaciones web
-- **Tailwind CSS V4** - Framework CSS (configurado via plugin)
-- **Google Fonts** - Righteous y Work Sans
-- **Lucide Icons** - Iconos via Reflex
-- **FormSubmit.co** - Servicio de formularios
+- **Reflex 0.9.5** — Framework Python para web
+- **Radix UI / Tailwind CSS V4** — Sistema de diseño y utilidades CSS
+- **Devicons v2.16** — Iconos de tecnologías via CDN
+- **Lucide Icons** — Iconos de interfaz via Reflex
+- **Google Fonts** — Righteous y Work Sans
+- **FormSubmit.co** — Formulario de contacto sin backend
 
-## 📝 Secciones del Portfolio
+## Autor
 
-1. **Inicio** - Presentación con foto de perfil y redes sociales
-2. **Sobre Mí** - Información personal, formación y experiencia
-3. **Skills** - Habilidades técnicas y profesionales
-4. **Curriculum** - Educación y experiencia laboral detallada
-5. **Portfolio** - Galería de 8 proyectos con enlaces
-6. **Contacto** - Formulario de contacto e información
+**Javier Curto Brull** — Desarrollador Backend Java · Python
 
-## 🔧 Personalización
-
-Para personalizar el contenido:
-
-1. Edita el archivo `JCB_Reflex/JCB_Reflex.py`
-2. Actualiza las imágenes en `assets/img/`
-3. Modifica los estilos en `assets/custom.css`
-4. Cambia la configuración en `rxconfig.py`
-
-## 📱 Responsive Design
-
-El diseño es completamente responsive con breakpoints en:
-
-- **Desktop**: > 1024px - Grid de 3 columnas para proyectos
-- **Tablet**: 768px - 1024px - Grid de 2 columnas
-- **Mobile**: < 768px - Grid de 1 columna, menú hamburguesa
-
-## 🌐 Deploy
-
-### Despliegue en Namecheap (Hosting Compartido)
-
-Dado que Reflex requiere un servidor ASGI/WebSocket que no está disponible en hosting compartido tradicional, se despliega como **sitio estático** con FormSubmit para el formulario de contacto.
-
-#### Pasos para desplegar:
-
-1. **Compilar versión estática** (solo frontend):
-
-```bash
-reflex export --frontend-only
-```
-
-Esto genera los archivos estáticos en `.web/build/client/`
-
-2. **Crear paquete de deployment**:
-
-```bash
-cd .web/build/client
-tar -czf ~/portfolio-deploy.tar.gz .
-```
-
-3. **Subir a Namecheap vía cPanel**:
-
-   - Accede a tu cPanel de Namecheap
-   - Ve a **File Manager**
-   - Navega a `/public_html/`
-   - **Elimina todo el contenido** existente en `public_html`
-   - Sube el archivo `portfolio-deploy.tar.gz`
-   - Selecciona el archivo y haz clic en **Extract**
-   - Elimina el archivo `.tar.gz` después de extraer
-
-4. **Configurar FormSubmit**:
-
-   - La primera vez que alguien envíe el formulario, recibirás un email de confirmación de FormSubmit
-   - Haz clic en el enlace de activación para validar tu email
-   - Después de esto, los mensajes llegarán directamente a tu correo
-
-#### Notas importantes:
-
-- ✅ **No requiere backend** - Todo el sitio es HTML/CSS/JS estático
-- ✅ **FormSubmit gratuito** - Maneja el envío de formularios sin servidor
-- ✅ **CSS personalizado** - Oculta elementos de estado de Reflex (WebSocket, modales)
-- ⚠️ **Sin funcionalidad del backend** - El State de Reflex no funciona en estático
-- ⚠️ **Archivos estáticos solamente** - Los cambios requieren recompilar y resubir
-
-#### Alternativas para deployment con backend completo:
-
-Si necesitas las funcionalidades completas de Reflex (State, WebSocket, backend):
-
-- **Render.com** - $7/mes, soporte Python completo
-- **Railway.app** - $5/mes, deploy automático desde GitHub
-- **DigitalOcean App Platform** - Desde $6/mes
-- **VPS propio** - Control total, desde $5/mes (DigitalOcean, Linode, Vultr)
-
-Para deployment en producción:
-
-```bash
-reflex export
-```
-
-Esto generará una versión optimizada completa (no solo frontend).
-
-## 👨‍💻 Autor
-
-### **Javier Curto Brull**
-
-- Desarrollador Backend Java Spring
-- Email: <curto.brull.javier@jcurtobr.eu>
-- Website: <https://jcurtobr.eu/>
+- Web: <https://jcurtobr.eu/>
 - LinkedIn: [javier-curto-brull](https://www.linkedin.com/in/javier-curto-brull/)
 - GitHub: [@CurtoBrull](https://github.com/CurtoBrull)
-
-## 📄 Licencia
-
-Este proyecto es personal y está disponible para referencia educativa.
-
----
-
-### **Desarrollado con ❤️ usando Reflex Python**
+- Email: <curto.brull.javier@jcurtobr.eu>
